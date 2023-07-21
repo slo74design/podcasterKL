@@ -35,8 +35,6 @@ export default function Home({ podcasts }) {
         setIsLoading(false);
     }, [podcasts, valueForm]);
 
-    isLoading && <Loader />;
-
     return (
         <div>
             <Head>
@@ -48,31 +46,39 @@ export default function Home({ podcasts }) {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <MainLayout>
-                <div className="flex flex-row justify-end items-center mt-10">
-                    <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10 mr-5">
-                        {dataCount}
-                    </span>
-                    <div className="relative rounded-full shadow-sm w-72">
-                        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-5">
-                            <MagnifyingGlassIcon className="w-5 h-5 text-slate-500" />
+                {!isLoading ? (
+                    <>
+                        <div className="flex flex-row justify-end items-center mt-10">
+                            <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10 mr-5">
+                                {dataCount}
+                            </span>
+                            <div className="relative rounded-full shadow-sm w-72 border">
+                                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-5">
+                                    <MagnifyingGlassIcon className="w-5 h-5 text-slate-500" />
+                                </div>
+                                <input
+                                    type="text"
+                                    name="searchTxt"
+                                    id="searchTxt"
+                                    onChange={(e) =>
+                                        setValueForm(e.target.value)
+                                    }
+                                    className="border-neutral-100 block w-full py-3 rounded-full pl-12 focus:border-neutral-100 focus:ring-neutral-200 sm:text-sm"
+                                    placeholder="Busca por titulo o author"
+                                />
+                            </div>
                         </div>
-                        <input
-                            type="text"
-                            name="searchTxt"
-                            id="searchTxt"
-                            onChange={(e) => setValueForm(e.target.value)}
-                            className="border-neutral-100 block w-full py-3 rounded-full pl-12 focus:border-neutral-100 focus:ring-neutral-200 sm:text-sm"
-                            placeholder="Busca por titulo o author"
+                        <PodcastsList
+                            data={
+                                valueForm !== "" && dataApi?.length > 0
+                                    ? dataApi
+                                    : podcasts
+                            }
                         />
-                    </div>
-                </div>
-                <PodcastsList
-                    data={
-                        valueForm !== "" && dataApi?.length > 0
-                            ? dataApi
-                            : podcasts
-                    }
-                />
+                    </>
+                ) : (
+                    <Loader />
+                )}
             </MainLayout>
         </div>
     );

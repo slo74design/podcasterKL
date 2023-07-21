@@ -5,7 +5,7 @@ import Image from "next/image";
 const Card = ({ details }) => {
     return (
         <Link
-            href="#"
+            href={`/podcast/${details.id.attributes["im:id"]}`}
             className="relative flex flex-col items-center place-content-between w-full shadow-lg mt-10 bg-white"
         >
             <Image
